@@ -1,0 +1,2 @@
+# gpu_docker_image
+GPUマシン上で動くdockerのcontainer imageを作る
