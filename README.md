@@ -32,11 +32,14 @@ Verify password: <input your password again>
 
 ## gpu\_test
 
-GPUがちゃんと動くかのテスト。nVIDIAのCUDAライブラリとTensorFlow, TensorBoard, PyTorch, TorchVision だけ。
+GPUがちゃんと動くかのテスト。nVIDIAのCUDAライブラリとTensorFlow, PyTorch だけ。
+それでも大きい（7GBぐらい）。
+GPUのテストスクリプトを埋め込んだので、 `test.sh` を叩くだけでテスト出来る。
 
 ## full\_packed
 
 全部盛り盛り。機械学習関係、自然言語関係、画像処理関係、Jupyter関係全部入り。
+すごく大きい。10GBを超える。
 
 ## Motivations and Tips
 
@@ -62,7 +65,17 @@ Dockerfile にも明確に書いてある。
 pytorch.org に行くとポチポチするだけで pip コマンドが出てくる奴があるので、それをコピペする。
 （tensorflow はあんま考えなくても使える（XLA_GPU）っぽいので、その点 Google さん優秀）
 
-4. docker run コマンドに --gpus XXX オプションを付けるのを忘れない
+4. TensorFlowを動かすにはさらにライブラリが必要
+上記で PyTorch は動くのだが、TensorFlowを動かそうとするとライブラリがいっぱい無いと怒られる。
+TensorFlow本家を見に行くと、インストールすべきライブラリが４つ載っているのだが、これでも足りない。
+https://www.tensorflow.org/install/gpu
+そこで、TensorFlowのgithubにあるDockerfileを<strike>盗み見</strike>参考にして、必要そうなライブラリをごそっとインストールする。
+https://github.com/tensorflow/tensorflow/tree/master/tensorflow/tools/dockerfiles
+これらDockerfileにはライブラリのパスの設定が色々と書いてあるのだが、
+変にいじくるとPyTorchすら動かなくなってしまったので、とりあえずライブラリのインストールだけ。
+以下のテストは動いた。
+
+5. docker run コマンドに --gpus XXX オプションを付けるのを忘れない
 私は毎回 docker run して調べる度にびっくりして絶望する
 
 GPUが使えるかどうかチェックポイント
@@ -73,5 +86,7 @@ GPUが使えるかどうかチェックポイント
 3. python を起動
 4. import torch; torch.cuda.is_available() が True 返す
 5. torch.cuda.device_count() が GPU の数を返す
-6. from tensorflow.python.client import device_lib; device_lib.list_local_devices() で GPU 一覧が見える
+6. import tensorflow as tf; tf.config.list_physical_devices('GPU') で使える GPU 一覧を得る
+
+これらは gputest.sh, gputest.py に書いてコンテナに埋め込んでいる
 ```
