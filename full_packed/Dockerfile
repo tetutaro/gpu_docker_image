@@ -59,7 +59,7 @@ RUN pip install --no-cache --upgrade pip && \
         mojimoji mecab-python3 spacy ginza sumeval \
         gensim fasttext sentencepiece \
         tensorflow tensorboard \
-        opencv-python scikit-image \
+        Pillow opencv-python scikit-image \
         ipywidgets widgetsnbextension ipympl qgrid bokeh jupyterlab && \
     pip install --no-cache torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html && \
     pip install --no-cache pytorch-lightning transformers && \
@@ -71,7 +71,6 @@ RUN pip install --no-cache --upgrade pip && \
     jupyter labextension install jupyter-matplotlib && \
     jupyter labextension install @bokeh/jupyter_bokeh && \
     jupyter labextension install qgrid2 && \
-    jupyter labextension install @axlair/jupyterlab_vim && \
     jupyter lab build && \
     jupyter lab clean
 RUN apt-get purge --autoremove -y curl git make file patch && \
