@@ -54,8 +54,10 @@ RUN git clone --depth 1 https://github.com/neologd/mecab-ipadic-neologd.git && \
 RUN pip install --no-cache --upgrade pip && \
     pip install --no-cache \
         simplejson xlrd requests click \
+        python-language-server[all] jupyter-lsp \
         numpy scipy scikit-learn \
         pandas matplotlib seaborn \
+        lime shap \
         mojimoji mecab-python3 spacy ginza sumeval \
         gensim fasttext sentencepiece \
         tensorflow tensorboard \
@@ -69,6 +71,8 @@ RUN pip install --no-cache --upgrade pip && \
     apt-get install -y nodejs && \
     jupyter labextension install @jupyter-widgets/jupyterlab-manager@2.0 && \
     jupyter labextension install jupyter-matplotlib && \
+    jupyter labextension install @jupyterlab/toc && \
+    jupyter labextension install @krassowski/jupyterlab-lsp && \
     jupyter labextension install @bokeh/jupyter_bokeh && \
     jupyter labextension install qgrid2 && \
     jupyter lab build && \
